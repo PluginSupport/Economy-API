@@ -25,6 +25,15 @@ public class TransactionBuilder {
     private Date date;
 
     public TransactionBuilder() {
+
+        //Default values incase not set...
+        id = UUID.randomUUID();
+        sender = null;
+        recipient = null;
+        amount = 1;
+        status = TransactionStatus.CANCELLED;
+        date = new Date();
+
     }
 
     public TransactionBuilder generateId() {
