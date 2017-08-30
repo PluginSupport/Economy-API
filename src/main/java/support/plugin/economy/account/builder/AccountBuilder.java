@@ -12,17 +12,26 @@ public class AccountBuilder {
 
     private UUID accountHolder;
 
-    private Double balance;
+    private double balance;
 
     private Date creationDate;
 
-    public AccountBuilder(UUID accountHolder){
+    private boolean limitation;
+
+    private double maximumTransaction;
+
+    public AccountBuilder(UUID accountHolder) {
 
         this.accountHolder = accountHolder;
 
+        balance = 0.00;
+        creationDate = new Date();
+        limitation = false;
+        maximumTransaction = -1.0;
+
     }
 
-    public AccountBuilder setBalance(Double balance){
+    public AccountBuilder setBalance(double balance) {
 
         this.balance = balance;
 
@@ -30,7 +39,7 @@ public class AccountBuilder {
 
     }
 
-    public AccountBuilder setDate(Date date){
+    public AccountBuilder setDate(Date date) {
 
         this.creationDate = date;
 
@@ -38,9 +47,25 @@ public class AccountBuilder {
 
     }
 
-    public Account build(){
+    public AccountBuilder setLimited(boolean limited) {
 
-        return new Account(accountHolder, balance,creationDate);
+        this.limitation = limited;
+
+        return this;
+
+    }
+
+    public AccountBuilder setMaximumTransaction(double maximumTransaction) {
+
+        this.maximumTransaction = maximumTransaction;
+
+        return this;
+
+    }
+
+    public Account build() {
+
+        return new Account(accountHolder, balance, creationDate, limitation, maximumTransaction);
 
     }
 

@@ -1,9 +1,7 @@
 package support.plugin.economy.transaction.builder;
 
 import support.plugin.economy.account.Account;
-import support.plugin.economy.account.dto.IAccount;
 import support.plugin.economy.transaction.Transaction;
-import support.plugin.economy.transaction.dto.ITransaction;
 import support.plugin.economy.transaction.enums.TransactionStatus;
 
 import java.util.Date;
@@ -16,19 +14,20 @@ public class TransactionBuilder {
 
     private UUID id;
 
-    private IAccount sender;
+    private Account sender;
 
-    private IAccount recipient;
+    private Account recipient;
 
-    private Double amount;
+    private double amount;
 
     private TransactionStatus status;
 
     private Date date;
 
-    public TransactionBuilder(){}
+    public TransactionBuilder() {
+    }
 
-    public TransactionBuilder generateId(){
+    public TransactionBuilder generateId() {
 
         id = UUID.randomUUID();
 
@@ -36,7 +35,7 @@ public class TransactionBuilder {
 
     }
 
-    public TransactionBuilder setSender(IAccount sender){
+    public TransactionBuilder setSender(Account sender) {
 
         this.sender = sender;
 
@@ -44,7 +43,7 @@ public class TransactionBuilder {
 
     }
 
-    public TransactionBuilder setRecipient(IAccount recipient){
+    public TransactionBuilder setRecipient(Account recipient) {
 
         this.recipient = recipient;
 
@@ -52,7 +51,7 @@ public class TransactionBuilder {
 
     }
 
-    public TransactionBuilder setAmount(Double amount){
+    public TransactionBuilder setAmount(double amount) {
 
         this.amount = amount;
 
@@ -60,7 +59,7 @@ public class TransactionBuilder {
 
     }
 
-    public TransactionBuilder setStatus(TransactionStatus status){
+    public TransactionBuilder setStatus(TransactionStatus status) {
 
         this.status = status;
 
@@ -68,7 +67,7 @@ public class TransactionBuilder {
 
     }
 
-    public TransactionBuilder setDate(Date date){
+    public TransactionBuilder setDate(Date date) {
 
         this.date = date;
 
@@ -76,9 +75,9 @@ public class TransactionBuilder {
 
     }
 
-    public Transaction build(){
+    public Transaction build() {
 
-        return new Transaction(id,sender,recipient,amount,date,status);
+        return new Transaction(id, sender, recipient, amount, date, status);
 
     }
 

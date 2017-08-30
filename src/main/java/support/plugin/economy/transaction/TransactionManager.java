@@ -1,9 +1,8 @@
 package support.plugin.economy.transaction;
 
+import lombok.Getter;
 import support.plugin.economy.Economy;
 import support.plugin.economy.transaction.dao.TransactionDao;
-import support.plugin.economy.transaction.dto.ITransaction;
-import support.plugin.economy.transaction.events.TransactionEvent;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,29 +14,30 @@ public class TransactionManager {
 
     private Economy instance;
 
+    @Getter
     private TransactionDao transactionDao;
 
-    private List<ITransaction> transactions;
+    private List<Transaction> transactions;
 
-    public TransactionManager(Economy instance){
+    public TransactionManager(Economy instance) {
         this.instance = instance;
 
-        this.transactionDao = new TransactionDao();
+        this.transactionDao = new TransactionDao(instance.hostname, instance.port, instance.password);
 
         transactions = transactionDao.getAll();
     }
 
-    public List<ITransaction> getAllTransactions(){
+    public List<Transaction> getAllTransactions() {
 
         return transactions;
 
     }
 
-    public ITransaction getTransaction(UUID id){
+    public Transaction getTransaction(UUID id) {
 
-        for(ITransaction transaction : transactions){
+        for (Transaction transaction : transactions) {
 
-            if(transaction.getId() == id){
+            if (transaction.getId() == id) {
                 return transaction;
             }
 
@@ -47,9 +47,9 @@ public class TransactionManager {
 
     }
 
-    public void deleteTransaction(ITransaction transaction){
+    public void deleteTransaction(Transaction transaction) {
 
-        if(transactions.contains(transaction)){
+        if (transactions.contains(transaction)) {
 
             transactions.remove(transaction);
             transactionDao.delete(transaction);
@@ -58,13 +58,21 @@ public class TransactionManager {
 
     }
 
-    public void createTransaction(ITransaction transaction){
+    public void createTransaction(Transaction transaction) {
 
-        TransactionEvent transactionEvent = new TransactionEvent(transaction);
-
-        if(!transactions.contains(transaction)){
+        if (!transactions.contains(transaction)) {
             transactions.add(transaction);
             transactionDao.insert(transaction);
+        }
+
+    }
+
+    public void updateAll() {
+
+        for (Transaction transaction : transactions) {
+
+            transactionDao.update(transaction);
+
         }
 
     }

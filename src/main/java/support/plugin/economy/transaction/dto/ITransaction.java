@@ -1,6 +1,6 @@
 package support.plugin.economy.transaction.dto;
 
-import support.plugin.economy.account.dto.IAccount;
+import support.plugin.economy.account.Account;
 import support.plugin.economy.transaction.enums.TransactionStatus;
 
 import java.util.Date;
@@ -13,11 +13,11 @@ public interface ITransaction {
 
     UUID getId();
 
-    IAccount getSender();
+    Account getSender();
 
-    IAccount getRecipient();
+    Account getRecipient();
 
-    Double getAmount();
+    double getAmount();
 
     TransactionStatus getStatus();
 

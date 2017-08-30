@@ -6,9 +6,12 @@ package support.plugin.economy.transaction.enums;
 public enum TransactionStatus {
 
     SUCCESS,
+    FAILED_INVALID_AMOUNT,
     FAILED_NO_FUNDS,
     FAILED_LIMIT_REACHED,
-    CANCELLED,
-    PROCESSING;
+    FAILED_SINGLE_LIMIT,
+    SENDER_LIMITED,
+    RECIPIENT_LIMITED,
+    CANCELLED;
 
 }

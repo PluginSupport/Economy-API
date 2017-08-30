@@ -3,10 +3,8 @@ package support.plugin.economy.transaction.dao;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import redis.clients.jedis.Jedis;
-import support.plugin.economy.account.Account;
 import support.plugin.economy.account.dto.IAccount;
 import support.plugin.economy.transaction.Transaction;
-import support.plugin.economy.transaction.dto.ITransaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +19,20 @@ public class TransactionDao {
     private final Gson gson;
     private final Jedis jedis;
 
-    public TransactionDao(){
+    public TransactionDao(String hostname, String port, String auth) {
 
         gson = new GsonBuilder().setPrettyPrinting().create();
-        jedis = new Jedis();
+        jedis = new Jedis(hostname, Integer.parseInt(port), 3000);
+
+        if (!(auth == null)) {
+            jedis.auth(auth);
+        }
 
     }
 
-    public void insert(ITransaction transaction){
+    public void insert(Transaction transaction) {
 
-        try(Jedis conn = jedis){
+        try (Jedis conn = jedis) {
 
             conn.set(getKey(transaction), gson.toJson(transaction));
 
@@ -38,9 +40,9 @@ public class TransactionDao {
 
     }
 
-    public void update(ITransaction transaction){
+    public void update(Transaction transaction) {
 
-        try(Jedis conn = jedis){
+        try (Jedis conn = jedis) {
 
             conn.set(getKey(transaction), gson.toJson(transaction));
 
@@ -48,9 +50,9 @@ public class TransactionDao {
 
     }
 
-    public void delete(ITransaction transaction){
+    public void delete(Transaction transaction) {
 
-        try(Jedis conn = jedis){
+        try (Jedis conn = jedis) {
 
             conn.del(getKey(transaction));
 
@@ -58,9 +60,9 @@ public class TransactionDao {
 
     }
 
-    public List<ITransaction> getAll(){
+    public List<Transaction> getAll() {
 
-        try(Jedis conn = jedis){
+        try (Jedis conn = jedis) {
 
             return conn.keys("econ:transactions:*").stream().map(k -> gson.fromJson(conn.get(k), Transaction.class)).collect(Collectors.toList());
 
@@ -68,11 +70,11 @@ public class TransactionDao {
 
     }
 
-    public ITransaction getById(UUID id){
+    public Transaction getById(UUID id) {
 
-        for(ITransaction transaction : getAll()){
+        for (Transaction transaction : getAll()) {
 
-            if(transaction.getId() == id){
+            if (transaction.getId() == id) {
                 return transaction;
             }
 
@@ -82,13 +84,13 @@ public class TransactionDao {
 
     }
 
-    public List<ITransaction> getTransactionsBySender(IAccount account){
+    public List<Transaction> getTransactionsBySender(IAccount account) {
 
-        List<ITransaction> transactions = new ArrayList<>();
+        List<Transaction> transactions = new ArrayList<>();
 
-        for(ITransaction transaction : getAll()){
+        for (Transaction transaction : getAll()) {
 
-            if(transaction.getSender() == account){
+            if (transaction.getSender() == account) {
                 transactions.add(transaction);
             }
 
@@ -98,13 +100,13 @@ public class TransactionDao {
 
     }
 
-    public List<ITransaction> getTransactionsByRecipient(IAccount account){
+    public List<Transaction> getTransactionsByRecipient(IAccount account) {
 
-        List<ITransaction> transactions = new ArrayList<>();
+        List<Transaction> transactions = new ArrayList<>();
 
-        for(ITransaction transaction : getAll()){
+        for (Transaction transaction : getAll()) {
 
-            if(transaction.getRecipient() == account){
+            if (transaction.getRecipient() == account) {
                 transactions.add(transaction);
             }
 
@@ -114,8 +116,8 @@ public class TransactionDao {
 
     }
 
-    public String getKey(ITransaction transaction){
-        return "econ:transactions:"+transaction.getId().toString();
+    public String getKey(Transaction transaction) {
+        return "econ:transactions:" + transaction.getId().toString();
     }
 
 }

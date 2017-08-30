@@ -1,5 +1,6 @@
 package support.plugin.economy.account.dto;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -9,6 +10,12 @@ public interface IAccount {
 
     UUID getAccountHolder();
 
-    Double getBalance();
+    double getBalance();
+
+    Date getCreationDate();
+
+    boolean getLimitation();
+
+    double getMaximumTransaction();
 
 }

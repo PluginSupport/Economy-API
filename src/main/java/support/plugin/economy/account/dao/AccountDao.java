@@ -18,16 +18,20 @@ public class AccountDao {
     private final Gson gson;
     private final Jedis jedis;
 
-    public AccountDao(){
+    public AccountDao(String hostname, String port, String auth) {
 
         gson = new GsonBuilder().setPrettyPrinting().create();
-        jedis = new Jedis();
+        jedis = new Jedis(hostname, Integer.parseInt(port), 3000);
+
+        if (!(auth == null)) {
+            jedis.auth(auth);
+        }
 
     }
 
-    public void insert(IAccount account){
+    public void insert(IAccount account) {
 
-        try(Jedis conn = jedis){
+        try (Jedis conn = jedis) {
 
             conn.set(getKey(account), gson.toJson(account));
 
@@ -35,9 +39,9 @@ public class AccountDao {
 
     }
 
-    public void update(IAccount account){
+    public void update(IAccount account) {
 
-        try(Jedis conn = jedis){
+        try (Jedis conn = jedis) {
 
             conn.set(getKey(account), gson.toJson(account));
 
@@ -45,9 +49,9 @@ public class AccountDao {
 
     }
 
-    public void delete(IAccount account){
+    public void delete(IAccount account) {
 
-        try(Jedis conn = jedis){
+        try (Jedis conn = jedis) {
 
             conn.del(getKey(account));
 
@@ -55,9 +59,9 @@ public class AccountDao {
 
     }
 
-    public List<IAccount> getAll(){
+    public List<Account> getAll() {
 
-        try(Jedis conn = jedis){
+        try (Jedis conn = jedis) {
 
             return conn.keys("econ:accounts:*").stream().map(k -> gson.fromJson(conn.get(k), Account.class)).collect(Collectors.toList());
 
@@ -65,11 +69,11 @@ public class AccountDao {
 
     }
 
-    public IAccount getAccount(UUID uuid){
+    public Account getAccount(UUID uuid) {
 
-        for(IAccount account : getAll()){
+        for (Account account : getAll()) {
 
-            if(account.getAccountHolder() == uuid){
+            if (account.getAccountHolder() == uuid) {
                 return account;
             }
 
@@ -79,8 +83,8 @@ public class AccountDao {
 
     }
 
-    public String getKey(IAccount account){
-        return "econ:accounts:"+account.getAccountHolder().toString();
+    public String getKey(IAccount account) {
+        return "econ:accounts:" + account.getAccountHolder().toString();
     }
 
 }

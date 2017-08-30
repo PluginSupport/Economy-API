@@ -19,21 +19,21 @@ public class AccountCreationEvent extends Event implements Cancellable {
 
     private Date creationDate;
 
-    public AccountCreationEvent(IAccount account, Date creationDate){
+    public AccountCreationEvent(IAccount account, Date creationDate) {
         this.account = account;
         this.creationDate = creationDate;
     }
 
 
-    public HandlerList getHandlers(){
+    public HandlerList getHandlers() {
         return handlers;
     }
 
-    public boolean isCancelled(){
+    public boolean isCancelled() {
         return cancelled;
     }
 
-    public void setCancelled(boolean cancelled){
+    public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
 

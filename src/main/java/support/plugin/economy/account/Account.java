@@ -15,23 +15,47 @@ public class Account implements IAccount {
     private UUID accountHolder;
 
     @Setter
-    private Double balance;
+    private double balance;
 
     @Setter
     private Date creationDate;
 
-    public Account(UUID accountHolder, Double balance, Date creationDate){
+    @Setter
+    private boolean accountLimited;
+
+    @Setter
+    private double maximumTransaction;
+
+    public Account(UUID accountHolder, double balance, Date creationDate, boolean limitation, double maximumTransaction) {
         this.accountHolder = accountHolder;
         this.balance = balance;
         this.creationDate = creationDate;
+        this.accountLimited = limitation;
+        this.maximumTransaction = maximumTransaction;
     }
 
-    public UUID getAccountHolder(){
+    public UUID getAccountHolder() {
         return accountHolder;
     }
 
-    public Double getBalance(){
+    public double getBalance() {
         return balance;
+    }
+
+    public void setBalance(Double amount) {
+        this.balance = amount;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public boolean getLimitation() {
+        return accountLimited;
+    }
+
+    public double getMaximumTransaction() {
+        return maximumTransaction;
     }
 
 }
