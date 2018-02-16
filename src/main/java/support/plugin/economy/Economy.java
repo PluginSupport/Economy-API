@@ -15,7 +15,7 @@ import support.plugin.economy.transaction.listeners.TransactionListener;
 public class Economy extends JavaPlugin {
 
     @Getter
-    public static Economy instance;
+    private static Economy instance;
     @Getter
     public String hostname, port, password;
     @Getter
